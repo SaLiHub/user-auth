@@ -2,7 +2,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 
-interface Error {
+export interface Error {
     name: string;
     message: string;
 }

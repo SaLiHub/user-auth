@@ -6,18 +6,27 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Checkbox, Grid, Button, Avatar, CssBaseline, TextField } from '@mui/material';
+import {
+    Checkbox,
+    Grid,
+    Button,
+    Avatar,
+    CssBaseline,
+    TextField,
+    Alert,
+    Dialog,
+    DialogActions,
+    DialogContentText, DialogContent
+} from '@mui/material';
 import {Link as RouterLink} from "react-router-dom";
-import {useSignUp} from "./useSignUp";
+import {useSignUp} from "../hooks/useSignUp";
 import Copyright from "./Copyright";
 
 const theme = createTheme();
 
 
 export default function SignUn() {
-    console.log('up')
-
-    const { handleSubmit } = useSignUp()
+    const { handleSubmit, handleInput, error, openDialog, handleDialog } = useSignUp()
 
     return (
         <ThemeProvider theme={theme}>
@@ -37,6 +46,9 @@ export default function SignUn() {
                     <Typography component="h1" variant="h5">
                         Sign Up
                     </Typography>
+                    {error && <Alert variant="outlined" severity="error" style={{marginTop: "10px", width: "100%"}}>
+                        {error.message}
+                    </Alert>}
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -47,6 +59,7 @@ export default function SignUn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={handleInput}
                         />
                         <TextField
                             margin="normal"
@@ -56,6 +69,7 @@ export default function SignUn() {
                             label="User name"
                             name="username"
                             autoComplete="username"
+                            onChange={handleInput}
                         />
                         <TextField
                             margin="normal"
@@ -108,6 +122,25 @@ export default function SignUn() {
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
+
+            <Dialog
+                open={openDialog}
+                onClose={handleDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        You've successfully registered. Now you can proceed to log in
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialog} autoFocus>
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </ThemeProvider>
     );
 }

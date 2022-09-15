@@ -6,9 +6,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Checkbox, Grid, Button, Avatar, CssBaseline, TextField } from '@mui/material';
+import {Checkbox, Grid, Button, Avatar, CssBaseline, TextField, Alert} from '@mui/material';
 import {Link as RouterLink} from "react-router-dom";
-import {useSignIn} from "./useSignIn";
+import {useSignIn} from "../hooks/useSignIn";
 import Copyright from "./Copyright";
 
 const theme = createTheme();
@@ -16,8 +16,8 @@ const theme = createTheme();
 
 
 export default function SignIn() {
-    console.log('in')
-    const { handleSubmit } = useSignIn()
+
+    const { handleSubmit, error, checkboxRef } = useSignIn();
 
     return (
         <ThemeProvider theme={theme}>
@@ -37,6 +37,9 @@ export default function SignIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
+                    {error && <Alert variant="outlined" severity="error" style={{marginTop: "10px", width: "100%"}}>
+                        {error.message}
+                    </Alert>}
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -59,7 +62,12 @@ export default function SignIn() {
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox
+                                inputRef={checkboxRef}
+                                value="remember"
+                                color="primary"
+
+                            />}
                             label="Remember me"
                         />
                         <Button
